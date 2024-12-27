@@ -223,7 +223,7 @@ do
           type="Unsupported"
         fi
         #Write out details for this resource
-        echo "$subscription,$rg,$resource_name,$lowercase_resource_type,$type" >> "$output_list_csv_file"
+        echo "\"$subscription\",\"$rg\",\"$resource_name\",\"$lowercase_resource_type\",\"$type\"" >> "$output_list_csv_file"
 
         #If this resource is also a VMSS, then get the same details about the (current) VMs
         if [ "$lowercase_resource_type" = "microsoft.compute/virtualmachinescalesets" ]; then
@@ -240,7 +240,7 @@ do
             else
               vmsstype="Unsupported"
             fi
-            echo "$subscription,$vmss_resource_group,$vmss_resource_name,$vmss_lowercase_resource_type,$vmsstype" >> "$output_list_csv_file"
+            echo "\"$subscription\",\"$vmss_resource_group\",\"$vmss_resource_name\",\"$vmss_lowercase_resource_type\",\"$vmsstype\"" >> "$output_list_csv_file"
 
           done <<< "$vmss_vm_list"
         fi
@@ -292,6 +292,11 @@ for key in "${!service_count[@]}"; do
 
 
 echo "Output saved to $output_csv_file"
+
+#-NEW-----------------------------------------------------------------------------------------
+echo "Output saved to $output_list_csv_file"
+#-NEW END-------------------------------------------------------------------------------------
+
 
 # Remove previous azure resource file if it exists
 if [ -f "$azure_resources_csv_file" ]; then
